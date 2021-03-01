@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
         gameView.setGame(game)
         game?.newGame()
 
-        moveRight.setOnClickListener { game?.movePacmanRight(10) }
-        moveLeft.setOnClickListener  { game?.movePacmanLeft(10) }
-        moveUp.setOnClickListener    { game?.movePacmanUp(10) }
-        moveDown.setOnClickListener  { game?.movePacmanDown(10) }
+        moveRight.setOnClickListener { game?.movePacman("right", 50) }
+        moveLeft.setOnClickListener  { game?.movePacman("left", 50) }
+        moveUp.setOnClickListener    { game?.movePacman("up", 50) }
+        moveDown.setOnClickListener  { game?.movePacman("down", 50) }
 
 //        initControls()
 

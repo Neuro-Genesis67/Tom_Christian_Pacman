@@ -3,8 +3,10 @@ package org.pondar.pacmankotlin
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.widget.TextView
 import java.util.ArrayList
+import kotlin.concurrent.fixedRateTimer
 
 
 /**
@@ -13,7 +15,7 @@ import java.util.ArrayList
 
 class Game(private var context: Context, view: TextView) {
 
-        private var pointsView: TextView = view
+        private var pointsView : TextView = view
         private var points : Int = 0
         //bitmap of the pacman
         var pacBitmap: Bitmap
@@ -35,6 +37,40 @@ class Game(private var context: Context, view: TextView) {
     // When game object is created, a packman bit image is added to the screen
     init { pacBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.pacman) }
 
+    fun movePacman(direction: String, pixels: Int) {
+        when (direction) {
+            "right" -> {
+                //  5         1            2        < 10
+                if (pacx + pixels + pacBitmap.width < w) {
+                    pacx += pixels // move 1 pixel to the right
+                }
+                println("STATUS: " + "\npacx: " + pacx + "\npixels: " + pixels + "\npackBitmap.width: " + pacBitmap.width + "\n")
+
+            }
+            "left" -> {                                           // 1 2 3 4 5 6 7 8 9 10
+                //  5        1             2          5            [ o o o o o o o o o o ]
+                if (pacx + pixels + pacBitmap.width > w) {
+                    pacx -= pixels
+                }
+                println("STATUS: " + "\npacx: " + pacx + "\npixels: " + pixels + "\npackBitmap.width: " + pacBitmap.width + "\n")
+            }
+            "down" -> {
+                if (pacy + pixels + pacBitmap.height < h) {
+                    pacy = pacy + pixels
+                }
+                println("STATUS: " + "\npacy: " + pacy + "\npixels: " + pixels + "\npackBitmap.height: " + pacBitmap.height + "\n")
+            }
+            "up" -> {
+                if (pacy - pixels - pacBitmap.height < h) {
+                    pacy = pacy - pixels
+                }
+                println("STATUS: " + "\npacy: " + pacy + "\npixels: " + pixels + "\npackBitmap.height: " + pacBitmap.height + "\n")
+            }
+
+        }
+        doCollisionCheck()
+        gameView!!.invalidate()
+    }
 
     fun setGameView(view: GameView) {
         this.gameView = view
@@ -60,29 +96,6 @@ class Game(private var context: Context, view: TextView) {
     fun setSize(h: Int, w: Int) {
         this.h = h
         this.w = w
-    }
-
-    fun movePacmanRight(pixels: Int) {
-        //still within our boundaries?
-        if (pacx + pixels + pacBitmap.width < w) {
-            pacx = pacx + pixels
-            doCollisionCheck()
-            gameView!!.invalidate()
-        }
-    }
-    fun movePacmanLeft(pixels: Int) {
-        pacy = pacy + pixels
-        gameView!!.invalidate()
-    }
-    fun movePacmanUp(pixels: Int) {
-        pacx = 300
-        doCollisionCheck()
-        gameView!!.invalidate()
-    }
-    fun movePacmanDown(pixels: Int) {
-        pacx = 600
-        gameView!!.invalidate()
-
     }
 
     //TODO check if the pacman touches a gold coin
