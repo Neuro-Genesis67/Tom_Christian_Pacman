@@ -17,7 +17,6 @@ class Game(private var context: Context, view: TextView) {
 
         private var pointsView : TextView = view
         private var points : Int = 0
-        //bitmap of the pacman
         var pacBitmap: Bitmap
         var pacx: Int = 0
         var pacy: Int = 0
@@ -40,36 +39,47 @@ class Game(private var context: Context, view: TextView) {
     fun movePacman(direction: String, pixels: Int) {
         when (direction) {
             "right" -> {
-                //  5         1            2        < 10
                 if (pacx + pixels + pacBitmap.width < w) {
-                    pacx += pixels // move 1 pixel to the right
+                    pacx += pixels // pacx = pacx + pixels
                 }
-                println("STATUS: " + "\npacx: " + pacx + "\npixels: " + pixels + "\npackBitmap.width: " + pacBitmap.width + "\n")
-
+                logPositionData(pixels) // Created for testing and troubleshooting purposes
             }
-            "left" -> {                                           // 1 2 3 4 5 6 7 8 9 10
-                //  5        1             2          5            [ o o o o o o o o o o ]
-                if (pacx + pixels + pacBitmap.width > w) {
-                    pacx -= pixels
+            "left" -> {
+                if (pacx - pixels >= 0) {
+                    pacx -= pixels // pacx = pacx - pixels
                 }
-                println("STATUS: " + "\npacx: " + pacx + "\npixels: " + pixels + "\npackBitmap.width: " + pacBitmap.width + "\n")
+                logPositionData(pixels)
             }
             "down" -> {
                 if (pacy + pixels + pacBitmap.height < h) {
-                    pacy = pacy + pixels
+                    pacy += pixels // pacy = pacy + pixels
                 }
-                println("STATUS: " + "\npacy: " + pacy + "\npixels: " + pixels + "\npackBitmap.height: " + pacBitmap.height + "\n")
+                logPositionData(pixels)
             }
             "up" -> {
-                if (pacy - pixels - pacBitmap.height < h) {
-                    pacy = pacy - pixels
+                if (pacy - pixels >= 0) {
+                    pacy -= pixels // pacy = pacy - pixels
                 }
-                println("STATUS: " + "\npacy: " + pacy + "\npixels: " + pixels + "\npackBitmap.height: " + pacBitmap.height + "\n")
+                logPositionData(pixels)
             }
 
         }
         doCollisionCheck()
         gameView!!.invalidate()
+    }
+
+    fun logPositionData(pixels: Int) {
+        println("STATUS: " + "\npacy: " + pacy + "\npixels: " + pixels + "\npackBitmap.height: " + pacBitmap.height + "\n")
+    }
+
+    fun newGame() {
+        pacx = 50 // 50 by default
+        pacy = 400 // 400
+        //reset the points
+        coinsInitialized = false
+        points = 0
+        pointsView.text = "${context.resources.getString(R.string.points)} $points"
+        gameView?.invalidate() //redraw screen
     }
 
     fun setGameView(view: GameView) {
@@ -83,15 +93,6 @@ class Game(private var context: Context, view: TextView) {
     }
 
 
-    fun newGame() {
-        pacx = 50
-        pacy = 400
-        //reset the points
-        coinsInitialized = false
-        points = 0
-        pointsView.text = "${context.resources.getString(R.string.points)} $points"
-        gameView?.invalidate() //redraw screen
-    }
 
     fun setSize(h: Int, w: Int) {
         this.h = h
