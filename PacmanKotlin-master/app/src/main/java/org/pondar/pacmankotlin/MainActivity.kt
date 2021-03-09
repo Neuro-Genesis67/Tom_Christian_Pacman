@@ -25,20 +25,14 @@ class MainActivity : AppCompatActivity() {
         gameView.setGame(game)
         game?.newGame()
 
+        initPacmanControls()
+    }
+
+    fun initPacmanControls () {
         moveRight.setOnClickListener { game?.movePacman("right", 50) }
         moveLeft.setOnClickListener  { game?.movePacman("left", 50) }
         moveUp.setOnClickListener    { game?.movePacman("up", 50) }
         moveDown.setOnClickListener  { game?.movePacman("down", 50) }
-
-//        initControls()
-
-    }
-
-    fun initControls () {
-//        moveRight.setOnClickListener { game?.movePacmanRight(10) }
-//        moveLeft.setOnClickListener  { game?.movePacmanleft(10) }
-//        moveUp.setOnClickListener    { game?.movePacmanRight(10) }
-//        moveDown.setOnClickListener  { game?.movePacmanRight(10) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
