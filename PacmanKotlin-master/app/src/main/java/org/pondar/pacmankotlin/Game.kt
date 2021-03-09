@@ -38,6 +38,31 @@ class Game(private var context: Context, view: TextView) {
         coinBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.pacman_coin)
     }
 
+    fun distance(x1:Int, y1:Int, x2:Int, y2:Int) : Float {
+        // calculate distance and return it
+
+        return 5.2f
+    }
+
+    //TODO check if the pacman touches a gold coin
+    //and if yes, then update the neccesseary data
+    //for the gold coins and the points
+    //so you need to go through the arraylist of goldcoins and
+    //check each of them for a collision with the pacman
+    fun doCollisionCheck() {
+
+        for (coin in coins) {
+            if (!coin.taken) {
+                logPacmanPositionData()
+
+                // Calculate distance between pacman and coin, if close enough, coin is taken
+
+            }
+        }
+
+    }
+
+
     fun initializeGoldcoins() {
         coins.add(GoldCoin(100, 100))
         coins.add(GoldCoin(300, 300))
@@ -51,8 +76,8 @@ class Game(private var context: Context, view: TextView) {
         coinsInitialized = true
     }
 
-    fun logPacmanPositionData(pixels: Int) {
-        println("STATUS: " + "\npacy: " + pacy + "\npixels: " + pixels + "\npackBitmap.height: " + pacBitmap.height + "\n")
+    fun logPacmanPositionData() {
+        println("\n_" + "\nlogPacmanPositionData(): " + "\npacy: " + pacy + "\npacx: " + pacx)
     }
 
     fun newGame() {
@@ -76,25 +101,25 @@ class Game(private var context: Context, view: TextView) {
                 if (pacx + pixels + pacBitmap.width < w) {
                     pacx += pixels // pacx = pacx + pixels
                 }
-                logPacmanPositionData(pixels) // Created for testing and troubleshooting purposes
+                logPacmanPositionData() // Created for testing and troubleshooting purposes
             }
             "left" -> {
                 if (pacx - pixels >= 0) {
                     pacx -= pixels // pacx = pacx - pixels
                 }
-                logPacmanPositionData(pixels)
+                logPacmanPositionData()
             }
             "down" -> {
                 if (pacy + pixels + pacBitmap.height < h) {
                     pacy += pixels // pacy = pacy + pixels
                 }
-                logPacmanPositionData(pixels)
+                logPacmanPositionData()
             }
             "up" -> {
                 if (pacy - pixels >= 0) {
                     pacy -= pixels // pacy = pacy - pixels
                 }
-                logPacmanPositionData(pixels)
+                logPacmanPositionData()
             }
 
         }
@@ -107,14 +132,7 @@ class Game(private var context: Context, view: TextView) {
         this.w = w
     }
 
-    //TODO check if the pacman touches a gold coin
-    //and if yes, then update the neccesseary data
-    //for the gold coins and the points
-    //so you need to go through the arraylist of goldcoins and
-    //check each of them for a collision with the pacman
-    fun doCollisionCheck() {
 
-    }
 
 
 
