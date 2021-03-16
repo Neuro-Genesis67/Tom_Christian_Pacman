@@ -30,9 +30,9 @@ class MainActivity : AppCompatActivity() {
 
     fun initPacmanControls () {
         moveRight.setOnClickListener { game?.movePacman("right", 50) }
-        moveLeft.setOnClickListener  { game?.movePacman("left", 50) }
-        moveUp.setOnClickListener    { game?.movePacman("up", 50) }
-        moveDown.setOnClickListener  { game?.movePacman("down", 50) }
+        moveLeft.setOnClickListener  { game?.movePacman("left", 50)  }
+        moveUp.setOnClickListener    { game?.movePacman("up", 50)    }
+        moveDown.setOnClickListener  { game?.movePacman("down", 50)  }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -47,13 +47,14 @@ class GameView : View {
         canvas.drawColor(Color.WHITE) //clear entire canvas to white color
 
         //draw the pacman
-        canvas.drawBitmap(game!!.pacBitmap, game?.pacx!!.toFloat(),
-                game?.pacy!!.toFloat(), paint)
+        canvas.drawBitmap(game!!.pacBitmap, game?.pac_x!!.toFloat(),
+                game?.pac_y!!.toFloat(), paint)
 
+        // Draw the gold coins on the screen
         for (coin in game!!.coins) {
             if (!coin.taken)
-            canvas.drawBitmap(game!!.coinBitmap, coin.pos_x.toFloat(),
-                    coin.pos_y.toFloat(), paint)
+            canvas.drawBitmap(game!!.coinBitmap, coin.coin_x.toFloat(),
+                    coin.coin_y.toFloat(), paint)
         }
 
         game?.doCollisionCheck()

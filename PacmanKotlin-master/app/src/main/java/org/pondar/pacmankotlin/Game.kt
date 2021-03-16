@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.TextView
 import java.util.ArrayList
 import kotlin.concurrent.fixedRateTimer
+import kotlin.math.sqrt
 
 
 // This class should contain all your game logic
@@ -15,9 +16,9 @@ class Game(private var context: Context, view: TextView) {
         private var pointsView : TextView = view
         private var points : Int = 0
         var pacBitmap: Bitmap
-        var coinBitmap: Bitmap
-        var pacx: Int = 0
-        var pacy: Int = 0
+        var coinBitmap: Bitmap // Variable to store Coin.PNG image
+        var pac_x: Int = 0
+        var pac_y: Int = 0
 
 
         //did we initialize the coins?
@@ -35,33 +36,32 @@ class Game(private var context: Context, view: TextView) {
     // When game object is created, a packman bit image is added to the screen
     init {
         pacBitmap  = BitmapFactory.decodeResource(context.resources, R.drawable.pacman)
-        coinBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.pacman_coin)
+        coinBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.pacman_coin) // Assign coin.PNG to the coinBitmap variable
     }
 
-    fun distance(x1:Int, y1:Int, x2:Int, y2:Int) : Float {
-        // calculate distance and return it
-
-        return 5.2f
-    }
-
-    //TODO check if the pacman touches a gold coin
-    //and if yes, then update the neccesseary data
-    //for the gold coins and the points
-    //so you need to go through the arraylist of goldcoins and
-    //check each of them for a collision with the pacman
     fun doCollisionCheck() {
 
         for (coin in coins) {
-            if (!coin.taken) {
-                logPacmanPositionData()
 
-                // Calculate distance between pacman and coin, if close enough, coin is taken
+            // If the coin hasn't been taken yet
+            if (!coin.taken) {
+
+                // If the distance between pacman and coin is less than 100
+                if (getDistance(pac_x, pac_y, coin.coin_x, coin.coin_y) < 100) {
+                    coin.taken = true
+                    points += 1
+                    pointsView.text = "${context.resources.getString(R.string.points)} $points"
+                }
 
             }
         }
 
     }
-
+    //  x1 and y1 are the coordinates for pacman, and x2 and y2 are the coordinates for a given coin
+    fun getDistance(x1:Int, y1:Int, x2:Int, y2:Int) : Int {
+        val result = sqrt(Math.pow(((x2 - x1).toDouble()), 2.0) + Math.pow((y2 - y1).toDouble(), 2.0))
+        return result.toInt()
+    }
 
     fun initializeGoldcoins() {
         coins.add(GoldCoin(100, 100))
@@ -77,12 +77,12 @@ class Game(private var context: Context, view: TextView) {
     }
 
     fun logPacmanPositionData() {
-        println("\n_" + "\nlogPacmanPositionData(): " + "\npacy: " + pacy + "\npacx: " + pacx)
+        println("\n_" + "\nlogPacmanPositionData(): " + "\npacy: " + pac_y + "\npacx: " + pac_x)
     }
 
     fun newGame() {
-        pacx = 50 // 50 by default
-        pacy = 400 // 400
+        pac_x = 50 // 50 by default
+        pac_y = 400 // 400
 
         //reset the points
         coinsInitialized = false
@@ -98,31 +98,23 @@ class Game(private var context: Context, view: TextView) {
     fun movePacman(direction: String, pixels: Int) {
         when (direction) {
             "right" -> {
-                if (pacx + pixels + pacBitmap.width < w) {
-                    pacx += pixels // pacx = pacx + pixels
-                }
-                logPacmanPositionData() // Created for testing and troubleshooting purposes
+                if (pac_x + pixels + pacBitmap.width < w)
+                    pac_x += pixels
             }
             "left" -> {
-                if (pacx - pixels >= 0) {
-                    pacx -= pixels // pacx = pacx - pixels
-                }
-                logPacmanPositionData()
+                if (pac_x - pixels >= 0)
+                    pac_x -= pixels
             }
             "down" -> {
-                if (pacy + pixels + pacBitmap.height < h) {
-                    pacy += pixels // pacy = pacy + pixels
-                }
-                logPacmanPositionData()
+                if (pac_y + pixels + pacBitmap.height < h)
+                    pac_y += pixels
             }
             "up" -> {
-                if (pacy - pixels >= 0) {
-                    pacy -= pixels // pacy = pacy - pixels
-                }
-                logPacmanPositionData()
+                if (pac_y - pixels >= 0)
+                    pac_y -= pixels
             }
-
         }
+        logPacmanPositionData()
         doCollisionCheck()
         gameView!!.invalidate()
     }
@@ -131,10 +123,5 @@ class Game(private var context: Context, view: TextView) {
         this.h = h
         this.w = w
     }
-
-
-
-
-
 
 }
