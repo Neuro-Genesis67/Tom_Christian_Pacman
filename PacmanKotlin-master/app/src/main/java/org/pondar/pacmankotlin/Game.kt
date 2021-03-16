@@ -48,8 +48,14 @@ class Game(private var context: Context, view: TextView) {
 
                 // If the distance between pacman and coin is less than 100
                 if (getDistance(pac_x, pac_y, coin.coin_x, coin.coin_y) < 100) {
+
+                    // Take the coin
                     coin.taken = true
+
+                    // Add 1 point to score
                     points += 1
+
+                    // Update score on the screen
                     pointsView.text = "${context.resources.getString(R.string.points)} $points"
                 }
 
