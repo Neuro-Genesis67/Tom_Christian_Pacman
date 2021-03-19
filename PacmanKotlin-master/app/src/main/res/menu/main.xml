@@ -15,4 +15,10 @@
         app:showAsAction="never"
         android:title="@string/action_settings"/>
 
+    <item
+        android:id="@+id/action_pauseGame"
+        android:orderInCategory="100"
+        android:title="Pause/Continue"
+        app:showAsAction="never" />
+
 </menu>
